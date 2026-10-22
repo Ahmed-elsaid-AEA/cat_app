@@ -1,12 +1,26 @@
-import 'package:cat_app/domain/entities/facts_entity.dart';
+import 'package:cat_app/core/database/api/api_constants.dart';
+import 'package:cat_app/core/database/api/dio_service.dart';
+import 'package:cat_app/core/error/server_exception.dart';
+import 'package:cat_app/core/type_def/app_type_def.dart';
+import 'package:cat_app/data/model/facts_model.dart';
+import 'package:dartz/dartz.dart';
 
 abstract class CatRemoteDataSource {
-  Future<FactsEntity> getCatFacts();
+  CatFactsResult getCatFacts();
 }
 
 class CatRemoteDataSourceImp implements CatRemoteDataSource {
+  final DioService dioService;
+  const CatRemoteDataSourceImp(this.dioService);
   @override
-  Future<FactsEntity> getCatFacts() {
-    throw UnimplementedError();
+  CatFactsResult getCatFacts() async {
+    try {
+      var res = await dioService.get(path: ApiConstants.factsEndPoint);
+      return Right(FactsModel.fromJson(res as Map<String, dynamic>));
+    } on ServerException catch (e) {
+      return Left(e.message);
+    } catch (e) {
+      return Left(e.toString());
+    }
   }
 }

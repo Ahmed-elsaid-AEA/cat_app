@@ -1,6 +1,6 @@
-import 'package:cat_app/domain/entities/facts_entity.dart';
+import 'package:cat_app/core/type_def/app_type_def.dart';
 
 abstract class CatRepository {
-   Future<FactsEntity> getCatFacts();
+   CatFactsResult getCatFacts();
  
 }
