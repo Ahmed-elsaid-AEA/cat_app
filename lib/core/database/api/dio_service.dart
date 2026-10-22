@@ -38,6 +38,7 @@ class DioService extends ApiConumer {
     try {
       if (response.statusCode! >= 200 && response.statusCode! < 300) {
         //success
+        return response.data;
       } else {
         //failure
         throw ServerException(
